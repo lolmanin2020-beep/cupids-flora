@@ -56,6 +56,7 @@
     myTurn = isHost;
     renderBoard();
     updateTurnStatus();
+    window.dispatchEvent(new CustomEvent('cupid:connected'));
   }
 
   function resetBoard(rc) {
@@ -122,6 +123,7 @@
       winTextEl.textContent = won ? 'You win! 🌹' : 'She wins! 🌷';
       winBannerEl.classList.remove('hidden');
       turnStatusEl.textContent = '';
+      window.dispatchEvent(new CustomEvent(won ? 'cupid:win' : 'cupid:lose'));
       return;
     }
     if (isBoardFull()) {
@@ -129,6 +131,7 @@
       winTextEl.textContent = "It's a draw!";
       winBannerEl.classList.remove('hidden');
       turnStatusEl.textContent = '';
+      window.dispatchEvent(new CustomEvent('cupid:draw'));
       return;
     }
     myTurn = color !== myColor;

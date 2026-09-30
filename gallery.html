@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Connect Four — Cupid's Flora</title>
+<title>Memory Garden — Cupid's Flora</title>
 <link rel="stylesheet" href="style.css" />
 </head>
-<body data-avatar-context="game">
+<body data-avatar-context="gallery">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -153,37 +153,15 @@
 <div class="page-wrap">
   <header class="hero hero--small">
     <a class="back-link" href="index.html">← Cupid's Flora</a>
-    <h1 class="script-title">Connect Four</h1>
-    <p class="tagline">take turns from wherever you both are</p>
+    <h1 class="script-title">Memory Garden</h1>
+    <p class="tagline">every little moment, kept somewhere safe</p>
   </header>
 
-  <main class="game-wrap">
-    <div id="lobby" class="ornate-panel">
-      <div id="lobby-choice" class="lobby-choice">
-        <button id="create-btn" class="ornate-button">Create a Game</button>
-        <div class="divider-word">or</div>
-        <div class="join-row">
-          <input id="join-input" type="text" placeholder="Paste her invite link or code" />
-          <button id="join-btn" class="ornate-button ornate-button--ghost">Join</button>
-        </div>
-      </div>
-      <div id="share-box" class="share-box hidden">
-        <p>Send this link to her:</p>
-        <div class="share-link-row">
-          <input id="share-link" type="text" readonly />
-          <button id="copy-btn" class="ornate-button ornate-button--ghost">Copy</button>
-        </div>
-      </div>
-      <p id="lobby-status" class="status-text"></p>
-    </div>
-
-    <div id="game" class="hidden">
-      <p id="turn-status" class="status-text"></p>
-      <div id="board" class="board"></div>
-      <div id="win-banner" class="win-banner hidden">
-        <p id="win-text"></p>
-        <button id="rematch-btn" class="ornate-button">Play Again</button>
-      </div>
+  <main>
+    <div id="gallery-tabs" class="gallery-tabs"></div>
+    <div id="gallery-grid" class="gallery-grid"></div>
+    <div id="gallery-empty" class="gallery-empty hidden">
+      <p>The garden is still growing — memories are being planted here soon. 🌱</p>
     </div>
   </main>
 
@@ -192,10 +170,15 @@
   </footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
-<script src="peer-connection.js"></script>
-<script src="connect-four.js"></script>
-<script src="flowers.js"></script>
+<div id="lightbox" class="lightbox hidden">
+  <button id="lightbox-close" class="lightbox-close">&times;</button>
+  <button id="lightbox-prev" class="lightbox-nav lightbox-nav--prev">&#8249;</button>
+  <img id="lightbox-img" src="" alt="A memory, enlarged" />
+  <button id="lightbox-next" class="lightbox-nav lightbox-nav--next">&#8250;</button>
+</div>
+
+<script src="gallery.js"></script>
 <script src="avatar.js"></script>
+<script src="flowers.js"></script>
 </body>
 </html>
