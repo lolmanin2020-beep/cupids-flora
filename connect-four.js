@@ -71,7 +71,7 @@
 
   function updateTurnStatus() {
     if (gameOver) return;
-    turnStatusEl.textContent = myTurn ? 'Your turn ❤' : "Her turn — waiting…";
+    turnStatusEl.textContent = myTurn ? 'Your turn ❤' : "Their turn — waiting…";
   }
 
   function renderBoard() {
@@ -120,7 +120,7 @@
     if (checkWin(placed.row, placed.col, color)) {
       gameOver = true;
       const won = color === myColor;
-      winTextEl.textContent = won ? 'You win! 🌹' : 'She wins! 🌷';
+      winTextEl.textContent = won ? 'You win! 🌹' : 'They win! 🌷';
       winBannerEl.classList.remove('hidden');
       turnStatusEl.textContent = '';
       window.dispatchEvent(new CustomEvent(won ? 'cupid:win' : 'cupid:lose'));
@@ -189,7 +189,7 @@
         const link = location.origin + location.pathname + '?room=' + id;
         shareLinkInput.value = link;
         shareBoxEl.classList.remove('hidden');
-        setLobbyStatus('Waiting for her to join…');
+        setLobbyStatus('Waiting for them to join…');
       },
       onConnected() {
         startGame();
@@ -208,14 +208,14 @@
   function joinWith(rawValue) {
     const roomId = extractRoomId(rawValue);
     if (!roomId) {
-      setLobbyStatus('Please paste her invite link or code.');
+      setLobbyStatus('Please paste your invite link or code.');
       return;
     }
     lobbyChoiceEl.classList.add('hidden');
     isHost = false;
     myColor = 'pink';
     opponentColor = 'red';
-    setLobbyStatus('Connecting to her game…');
+    setLobbyStatus('Connecting to their game…');
     PeerLink.joinGame(roomId, {
       onConnected() {
         startGame();

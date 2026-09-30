@@ -25,7 +25,7 @@
   };
 
   const GAME_EVENT_PHRASES = {
-    connected: ["Yay, she's here! Let's play.", "Two players, ready to go!"],
+    connected: ["Yay, you're both here! Let's play.", "Two players, ready to go!"],
     win: ["You won!! I'm so proud 🎉", "That's my favorite person right there!", "GG! You're amazing."],
     lose: ["Aww, so close! Next round?", "*pouts* rematch time.", "You'll get it next time!"],
     draw: ["A tie! Sneaky sneaky.", "Nobody wins this one, huh?"]

@@ -489,3 +489,27 @@ footer.flourish-footer {
 }
 .lightbox-nav--prev { left: 10px; }
 .lightbox-nav--next { right: 10px; }
+
+/* Falling petals */
+#petal-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.petal {
+  position: absolute;
+  top: -20px;
+  left: var(--start-x);
+  animation: petal-fall var(--duration) linear forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes petal-fall {
+  0% { transform: translate(0, 0) rotate(var(--rotate-start)); opacity: 0; }
+  10% { opacity: .85; }
+  90% { opacity: .85; }
+  100% { transform: translate(var(--drift), 112vh) rotate(var(--rotate-end)); opacity: 0; }
+}
