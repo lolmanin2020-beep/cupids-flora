@@ -72,8 +72,16 @@ a { color: var(--color-rose-dark); }
 .f-leaf-sm { width: 54px; height: 54px; animation-delay: -4.5s; }
 
 @keyframes sway {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
+  0%, 100% { transform: rotate(-3deg) scale(1); }
+  50% { transform: rotate(3deg) scale(1.05); }
+}
+
+.flower--wiggle { animation: flower-wiggle .6s ease !important; }
+@keyframes flower-wiggle {
+  0%, 100% { transform: rotate(0) scale(1); }
+  25% { transform: rotate(-12deg) scale(1.12); }
+  50% { transform: rotate(10deg) scale(1.08); }
+  75% { transform: rotate(-6deg) scale(1.05); }
 }
 
 .heart-pop {
@@ -531,6 +539,13 @@ footer.flourish-footer {
   animation: charm-sway 5s ease-in-out infinite;
 }
 .toy-charm--dragging { cursor: grabbing; animation: none; }
+.toy-charm--wiggle { animation: charm-wiggle .7s ease !important; }
+@keyframes charm-wiggle {
+  0%, 100% { transform: rotate(0) translateY(0) scale(1); }
+  20% { transform: rotate(-14deg) translateY(-4px) scale(1.08); }
+  45% { transform: rotate(12deg) translateY(-10px) scale(1.1); }
+  70% { transform: rotate(-8deg) translateY(-2px) scale(1.04); }
+}
 
 .toy-elephant { left: 10px; top: 40%; animation-delay: 0s; }
 .toy-flowers { right: 10px; top: 22%; animation-delay: -1.2s; }

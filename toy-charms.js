@@ -43,4 +43,17 @@
   }
 
   document.querySelectorAll('.toy-charm').forEach(makeDraggable);
+
+  function startIdleWiggles() {
+    document.querySelectorAll('.toy-charm').forEach((el) => {
+      const loop = () => {
+        el.classList.remove('toy-charm--wiggle');
+        void el.offsetWidth;
+        el.classList.add('toy-charm--wiggle');
+        setTimeout(loop, 6000 + Math.random() * 8000);
+      };
+      setTimeout(loop, 1500 + Math.random() * 6000);
+    });
+  }
+  startIdleWiggles();
 })();

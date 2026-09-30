@@ -1,3 +1,22 @@
+function startIdleWiggles() {
+  const targets = document.querySelectorAll('.flower');
+  targets.forEach((el) => {
+    const loop = () => {
+      el.classList.remove('flower--wiggle');
+      void el.offsetWidth;
+      el.classList.add('flower--wiggle');
+      setTimeout(loop, 7000 + Math.random() * 9000);
+    };
+    setTimeout(loop, 2000 + Math.random() * 8000);
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startIdleWiggles);
+} else {
+  startIdleWiggles();
+}
+
 document.addEventListener('click', (e) => {
   const flower = e.target.closest('.flower, .toy-charm');
   if (!flower) return;
