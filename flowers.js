@@ -1,6 +1,10 @@
 document.addEventListener('click', (e) => {
-  const flower = e.target.closest('.flower');
+  const flower = e.target.closest('.flower, .toy-charm');
   if (!flower) return;
+  if (flower.dataset.justDragged) {
+    delete flower.dataset.justDragged;
+    return;
+  }
   const hearts = ['❤', '💗', '🌹'];
   for (let i = 0; i < 3; i++) {
     const heart = document.createElement('span');

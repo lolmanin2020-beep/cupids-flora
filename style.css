@@ -513,3 +513,39 @@ footer.flourish-footer {
   90% { opacity: .85; }
   100% { transform: translate(var(--drift), 112vh) rotate(var(--rotate-end)); opacity: 0; }
 }
+
+/* Toy photo charms */
+.toy-charm {
+  position: fixed;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  border: 3px solid var(--color-gold);
+  box-shadow: 0 8px 16px rgba(74,22,32,.28), 0 0 0 2px #fffaf9;
+  object-fit: cover;
+  cursor: grab;
+  z-index: 150;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  animation: charm-sway 5s ease-in-out infinite;
+}
+.toy-charm--dragging { cursor: grabbing; animation: none; }
+
+.toy-elephant { left: 10px; top: 40%; animation-delay: 0s; }
+.toy-flowers { right: 10px; top: 22%; animation-delay: -1.2s; }
+.toy-bunny { left: 10px; top: 68%; animation-delay: -2.4s; }
+.toy-panda { right: 10px; top: 58%; animation-delay: -3.6s; }
+
+@keyframes charm-sway {
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  50% { transform: rotate(4deg) translateY(-6px); }
+}
+
+@media (max-width: 520px) {
+  .toy-charm { width: 46px; height: 46px; border-width: 2px; }
+  .toy-elephant { top: auto; left: 6%; bottom: 95px; }
+  .toy-flowers { top: auto; right: auto; left: 30%; bottom: 95px; }
+  .toy-bunny { top: auto; left: 54%; bottom: 95px; }
+  .toy-panda { top: auto; right: auto; left: 78%; bottom: 95px; }
+}
