@@ -1,20 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700&family=Cormorant+Garamond:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --color-bg: #fdf1f4;
-  --color-rose-dark: #7a1f2b;
-  --color-rose-mid: #a83a4d;
-  --color-pink-soft: #f3c9d3;
-  --color-pink-mid: #e58ba0;
-  --color-carnation: #c13a52;
-  --color-gold: #c9a24b;
-  --color-gold-light: #e6c987;
+  --color-bg: #fdf2f8;
+  --color-rose-dark: #be185d;
+  --color-rose-mid: #ec4899;
+  --color-pink-soft: #fbcfe8;
+  --color-pink-mid: #ec4899;
+  --color-carnation: #dc2626;
+  --color-gold: #be185d;
+  --color-gold-light: #ec4899;
   --color-leaf: #7c8f6e;
-  --color-text: #4a1620;
-  --color-text-soft: #7a4652;
-  --font-display: 'Playfair Display', serif;
-  --font-script: 'Great Vibes', cursive;
-  --font-body: 'Cormorant Garamond', serif;
+  --color-text: #0f172a;
+  --color-text-soft: #475569;
+  --font-display: 'Quicksand', sans-serif;
+  --font-script: 'Caveat', cursive;
+  --font-body: 'Quicksand', sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -264,7 +264,7 @@ footer.flourish-footer {
   display: inline-grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
-  background: linear-gradient(180deg, var(--color-rose-dark), #5c1420);
+  background: linear-gradient(180deg, var(--color-rose-dark), #8b0a47);
   padding: 14px;
   border-radius: 16px;
   margin-top: 20px;
@@ -289,7 +289,7 @@ footer.flourish-footer {
 }
 
 .cell.red {
-  background: radial-gradient(circle at 35% 30%, #c2495c, var(--color-rose-dark));
+  background: radial-gradient(circle at 35% 30%, #f472b6, var(--color-rose-dark));
   animation: drop .45s cubic-bezier(.5,1.8,.6,1);
 }
 .cell.pink {
