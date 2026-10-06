@@ -95,6 +95,9 @@
     const wrap = document.createElement('div');
     wrap.id = 'cupid-avatar';
     wrap.className = 'cupid-avatar cupid-avatar--' + context;
+    wrap.setAttribute('role', 'button');
+    wrap.setAttribute('tabindex', '0');
+    wrap.setAttribute('aria-label', 'Say hi to your companion');
     wrap.innerHTML = SVG_MARKUP + '<div class="cupid-speech" id="cupid-speech"></div>';
     document.body.appendChild(wrap);
     return wrap;
@@ -200,6 +203,12 @@
     }
 
     el.addEventListener('pointerdown', onPointerDown);
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleClick(e);
+      }
+    });
 
     if (context === 'game') {
       window.addEventListener('cupid:connected', () => {

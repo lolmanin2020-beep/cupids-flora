@@ -564,3 +564,23 @@ footer.flourish-footer {
   .toy-bunny { top: auto; left: 54%; bottom: 95px; }
   .toy-panda { top: auto; right: auto; left: 78%; bottom: 95px; }
 }
+
+/* Respect reduced-motion preference: freeze ambient/decorative animation */
+@media (prefers-reduced-motion: reduce) {
+  .flower,
+  .cupid-avatar,
+  .toy-charm {
+    animation: none !important;
+  }
+  .flower--wiggle,
+  .toy-charm--wiggle {
+    animation: none !important;
+  }
+}
+
+/* Keyboard focus for interactive companions (avatar, toy charms) */
+.cupid-avatar:focus-visible,
+.toy-charm:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 3px;
+}

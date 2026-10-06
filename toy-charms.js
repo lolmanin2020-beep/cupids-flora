@@ -40,9 +40,19 @@
     }
 
     el.addEventListener('pointerdown', onPointerDown);
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        el.click();
+      }
+    });
   }
 
-  document.querySelectorAll('.toy-charm').forEach(makeDraggable);
+  document.querySelectorAll('.toy-charm').forEach((el) => {
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    makeDraggable(el);
+  });
 
   function startIdleWiggles() {
     document.querySelectorAll('.toy-charm').forEach((el) => {
