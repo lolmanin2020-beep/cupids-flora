@@ -83,7 +83,8 @@
     }
 
     function tick(now) {
-      const step = Math.min(now - last, 60);
+      // Capped so a stalled frame cannot fill it in one jump, but loose enough that a slow phone keeps time.
+      const step = Math.min(now - last, 250);
       last = now;
       amount = Math.max(0, Math.min(1, amount + (holding ? step / FILL : -step / DRAIN)));
       paint();
