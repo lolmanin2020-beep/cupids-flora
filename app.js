@@ -404,17 +404,24 @@
     const BLOOM = 760;    // ms for one rose to open
     const SPREAD = 1350;  // ms for the bloom to travel from the envelope to the farthest corner
     const PART = 520;     // ms for one rose to close when the cover parts
+    // Big screens (PC, iPad) get the same pixel load as a phone, so the bloom stays smooth everywhere.
+    const MAX_PIXELS = 2.4e6;
+    const SPRITE = 512;
     const sprites = ROSES.map((uri) => {
       const sprite = document.createElement('canvas');
-      sprite.width = sprite.height = 384;
+      sprite.width = sprite.height = SPRITE;
       const img = new Image();
       img.onload = () => {
-        sprite.getContext('2d').drawImage(img, 0, 0, 384, 384);
+        sprite.getContext('2d').drawImage(img, 0, 0, SPRITE, SPRITE);
         sprite.ready = true;
       };
       img.src = uri;
       return sprite;
     });
+    // Roses that have finished opening are painted once onto this layer instead of every frame.
+    const settled = document.createElement('canvas');
+    const settledCtx = settled.getContext('2d');
+    let settledCount = 0;
     let roses = [];
     let width = 0;
     let height = 0;
@@ -424,12 +431,17 @@
 
     function plant(originX, originY) {
       const rand = seeded(1022);
-      const scale = Math.min(window.devicePixelRatio || 1, 2);
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = width * scale;
-      canvas.height = height * scale;
+      const scale = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(MAX_PIXELS / (width * height)));
+      [canvas, settled].forEach((c) => {
+        c.width = Math.round(width * scale);
+        c.height = Math.round(height * scale);
+      });
       ctx.setTransform(scale, 0, 0, scale, 0, 0);
+      settledCtx.setTransform(scale, 0, 0, scale, 0, 0);
+      ctx.imageSmoothingQuality = settledCtx.imageSmoothingQuality = 'medium';
+      settledCount = 0;
 
       const step = Math.max(54, Math.min(width, height) / 6.5);
       const far = Math.hypot(Math.max(originX, width - originX), Math.max(originY, height - originY));
@@ -445,35 +457,58 @@
             turn: rand() * Math.PI * 2,
             reach: Math.hypot(px - originX, py - originY) / far,
             jitter: rand() * 160,
-            layer: rand(),
             sprite: sprites[Math.floor(rand() * sprites.length)]
           });
         }
       }
-      roses.sort((a, b) => a.layer - b.layer);
+      // Later roses sit on top of earlier ones, so the bloom piles outward from the envelope.
+      roses.sort((a, b) => (a.reach * SPREAD + a.jitter) - (b.reach * SPREAD + b.jitter));
+    }
+
+    function progress(rose, elapsed) {
+      const delay = rose.reach * (parting ? SPREAD * .7 : SPREAD) + rose.jitter;
+      return Math.min(1, Math.max(0, (elapsed - delay) / (parting ? PART : BLOOM)));
+    }
+
+    // Opening overshoots a touch, like a bud springing; closing just folds away.
+    // With reduce motion on, the roses fade in and out where they lie instead.
+    function paintRose(c, rose, p) {
+      const open = reduceMotion ? 1 : parting ? 1 - p * p : 1 + 2.2 * Math.pow(p - 1, 3) + 1.2 * Math.pow(p - 1, 2);
+      const alpha = reduceMotion ? (parting ? 1 - p : p) : 1;
+      if (open <= 0.01 || alpha <= 0.01) return;
+      c.save();
+      c.globalAlpha = alpha;
+      c.translate(rose.x, rose.y);
+      c.rotate(rose.turn - (1 - open) * 1.1);
+      c.scale(open, open);
+      c.drawImage(rose.sprite, -rose.size / 2, -rose.size / 2, rose.size, rose.size);
+      c.restore();
     }
 
     function draw(now) {
       const elapsed = now - started;
-      const travel = parting ? SPREAD * .7 : SPREAD;
       let moving = false;
       ctx.clearRect(0, 0, width, height);
-      roses.forEach((rose) => {
-        const p = Math.min(1, Math.max(0, (elapsed - rose.reach * travel - rose.jitter) / (parting ? PART : BLOOM)));
-        if (p < 1) moving = true;
-        // Opening overshoots a touch, like a bud springing; closing just folds away.
-        // With reduce motion on, the roses fade in and out where they lie instead.
-        const open = reduceMotion ? 1 : parting ? 1 - p * p : 1 + 2.2 * Math.pow(p - 1, 3) + 1.2 * Math.pow(p - 1, 2);
-        const alpha = reduceMotion ? (parting ? 1 - p : p) : 1;
-        if (open <= 0.01 || alpha <= 0.01) return;
-        ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.translate(rose.x, rose.y);
-        ctx.rotate(rose.turn - (1 - open) * 1.1);
-        ctx.scale(open, open);
-        ctx.drawImage(rose.sprite, -rose.size / 2, -rose.size / 2, rose.size, rose.size);
-        ctx.restore();
-      });
+      if (!parting) {
+        // Roses finish in the same order they start, so finished ones can be baked onto the settled layer.
+        while (settledCount < roses.length && progress(roses[settledCount], elapsed) >= 1) {
+          paintRose(settledCtx, roses[settledCount], 1);
+          settledCount++;
+        }
+        if (settledCount) ctx.drawImage(settled, 0, 0, width, height);
+        for (let i = settledCount; i < roses.length; i++) {
+          const p = progress(roses[i], elapsed);
+          moving = true;
+          if (p <= 0) break;
+          paintRose(ctx, roses[i], p);
+        }
+      } else {
+        roses.forEach((rose) => {
+          const p = progress(rose, elapsed);
+          if (p < 1) moving = true;
+          paintRose(ctx, rose, p);
+        });
+      }
       if (moving) frame = requestAnimationFrame(draw);
     }
 
