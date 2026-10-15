@@ -188,7 +188,6 @@
     env.addEventListener('click', () => {
       if (wrap.classList.contains('is-open')) return;
       wrap.classList.add('is-open');
-      if (reduceMotion) { setTimeout(() => show('reveal'), 400); return; }
       // Once the letter is out, roses bloom from it and cover the screen.
       const box = env.getBoundingClientRect();
       setTimeout(() => roseCover.bloom(box.left + box.width / 2, box.top + box.height * .3, () => show('reveal')), 1500);
@@ -463,9 +462,12 @@
         const p = Math.min(1, Math.max(0, (elapsed - rose.reach * travel - rose.jitter) / (parting ? PART : BLOOM)));
         if (p < 1) moving = true;
         // Opening overshoots a touch, like a bud springing; closing just folds away.
-        const open = parting ? 1 - p * p : 1 + 2.2 * Math.pow(p - 1, 3) + 1.2 * Math.pow(p - 1, 2);
-        if (open <= 0.01) return;
+        // With reduce motion on, the roses fade in and out where they lie instead.
+        const open = reduceMotion ? 1 : parting ? 1 - p * p : 1 + 2.2 * Math.pow(p - 1, 3) + 1.2 * Math.pow(p - 1, 2);
+        const alpha = reduceMotion ? (parting ? 1 - p : p) : 1;
+        if (open <= 0.01 || alpha <= 0.01) return;
         ctx.save();
+        ctx.globalAlpha = alpha;
         ctx.translate(rose.x, rose.y);
         ctx.rotate(rose.turn - (1 - open) * 1.1);
         ctx.scale(open, open);
