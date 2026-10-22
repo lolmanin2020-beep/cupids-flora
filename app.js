@@ -193,7 +193,13 @@
       setTimeout(() => roseCover.bloom(box.left + box.width / 2, box.top + box.height * .3, () => show('reveal')), 1500);
     });
 
-    onEnter.envelope = () => wrap.classList.remove('is-open');
+    // Close it instantly on a replay, rather than letting it fold itself shut on screen.
+    onEnter.envelope = () => {
+      wrap.classList.add('is-resetting');
+      wrap.classList.remove('is-open');
+      void wrap.offsetWidth;
+      wrap.classList.remove('is-resetting');
+    };
   }
 
   /* 3. Reveal */

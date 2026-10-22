@@ -337,6 +337,7 @@ button:focus-visible {
 .seal__half--l { clip-path: polygon(0 0, 54% 0, 45% 28%, 56% 50%, 44% 74%, 52% 100%, 0 100%); }
 .seal__half--r { clip-path: polygon(54% 0, 100% 0, 100% 100%, 52% 100%, 44% 74%, 56% 50%, 45% 28%); }
 
+.is-resetting, .is-resetting * { transition: none !important; }
 .is-open .env { cursor: default; }
 .is-open .env__seal { animation: none; }
 .is-open .seal__half--l { transform: translate(-45%, 65%) rotate(-28deg); opacity: 0; }
